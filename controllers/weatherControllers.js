@@ -5,8 +5,8 @@ const { response } = require('express');
 function getCurrentData(req, res){
     const { city, cc } = req.params;
     Weather
-        .getData(city, cc)
-        .getCurrentData()
+        //.getData(city, cc)
+        .getCurrentData(city, cc)
         .then( response=> {
             //data process
             return res.json(response); //return all, should divided two route
@@ -18,11 +18,10 @@ function getCurrentData(req, res){
 function getForecastData(req, res){
     const { city, cc } = req.params;
     Weather
-        .getData(city, cc)
-        .getForecastData()
+        .getForecastData(city, cc)
         .then( response=> {
             //data process
-            return res.json(response); //return all, should divided two route
+            return res.json(response); //how to limit in 7 days
         })
         .catch(err => {
             console.log(err);

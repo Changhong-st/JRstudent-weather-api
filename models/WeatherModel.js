@@ -6,15 +6,16 @@ const axios = require('../services/axios');
 
 class Weather{
     constructor(){}
-    getData(city, cc){
+    getCurrentData(city, cc){
         return Promise.all(this.getOpenWeatherData(city, cc)).then((res) => {
             let currentWeatherData = res[0].data;
             let forecastWeatherData = res[1].data;
             const weather = {
                 city: new City(forecastWeatherData.city),
                 current: new CurrentWeather(currentWeatherData),
-                forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
+                //forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
         };
+        //weather.remove(forecast);
         return weather;
         })
         //dotenv
@@ -26,18 +27,32 @@ class Weather{
         //     }
         // ) 
     }
-    getCurrentData(){
-        const weather = this.getData(city, cc);
-        delete weather.forecast;
-        return weather;
 
-    }
-    getForecastData(){
-        const weather = this.getData(city, cc);
-        delete weather.current;
+    getCurrentData(city, cc){
+        return Promise.all(this.getOpenWeatherData(city, cc)).then((res) => {
+            let currentWeatherData = res[0].data;
+            let forecastWeatherData = res[1].data;
+            const weather = {
+                city: new City(forecastWeatherData.city),
+                //current: new CurrentWeather(currentWeatherData),
+                forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
+        };
+        //weather.remove(forecast);
         return weather;
+        })
+        //dotenv
     }
-    
+
+    // getCurrentData(city, cc){
+    //     const weather = this.getData(city, cc);
+    //     weather.remove(forecast);
+    //     return weather;
+    // }
+    // getForecastData(city, cc){
+    //     const weather = this.getData(city, cc);
+    //     weather.remove(forecast);
+    //     return weather;
+    // }
     getOpenWeatherData(city, cc){ 
         const paramStr = `${city}, ${cc}`;
         return [
