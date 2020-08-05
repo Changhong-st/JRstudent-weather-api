@@ -16,9 +16,9 @@ function getCurrentData(req, res){
         });
 }
 function getForecastData(req, res){
-    const { city, cc } = req.params;
+    const { city, cc, cnt } = req.params;
     Weather
-        .getForecastData(city, cc)
+        .getForecastData(city, cc, cnt)
         .then( response=> {
             //data process
             return res.json(response); //how to limit in 7 days

@@ -2,20 +2,21 @@ const City = require('./CityModel');
 const CurrentWeather = require('./CurrentWeatherModel');
 const ForecastWeather = require('./ForecastWeatherModel');
 const axios = require('../services/axios');
+//const { delete } = require('../routes/weatherRoute');
 
 
 class Weather{
     constructor(){}
-    getCurrentData(city, cc){
+    getCurrentData(city, cc, type){
         return Promise.all(this.getOpenWeatherData(city, cc)).then((res) => {
             let currentWeatherData = res[0].data;
             let forecastWeatherData = res[1].data;
             const weather = {
-                city: new City(forecastWeatherData.city),
-                current: new CurrentWeather(currentWeatherData),
-                //forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
+                city: new City(forecastWeatherData.city),  //方法一： if else 传入type判断 ，remove相应的type
+                current: new CurrentWeather(currentWeatherData), //方法二： 只保留City，根据type注入
+                forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
         };
-        //weather.remove(forecast);
+        delete weather.forecast
         return weather;
         })
         //dotenv
@@ -28,8 +29,8 @@ class Weather{
         // ) 
     }
 
-    getCurrentData(city, cc){
-        return Promise.all(this.getOpenWeatherData(city, cc)).then((res) => {
+    getForecastData(city, cc, cnt = 7){
+        return Promise.all(this.getOpenWeatherData(city, cc, cnt)).then((res) => {
             let currentWeatherData = res[0].data;
             let forecastWeatherData = res[1].data;
             const weather = {
@@ -37,7 +38,7 @@ class Weather{
                 //current: new CurrentWeather(currentWeatherData),
                 forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
         };
-        //weather.remove(forecast);
+        //weather.remove(current);
         return weather;
         })
         //dotenv
@@ -45,6 +46,7 @@ class Weather{
 
     // getCurrentData(city, cc){
     //     const weather = this.getData(city, cc);
+    //     delete
     //     weather.remove(forecast);
     //     return weather;
     // }
@@ -53,7 +55,7 @@ class Weather{
     //     weather.remove(forecast);
     //     return weather;
     // }
-    getOpenWeatherData(city, cc){ 
+    getOpenWeatherData(city, cc, cnt){  
         const paramStr = `${city}, ${cc}`;
         return [
             axios.get('/weather', {
@@ -63,10 +65,16 @@ class Weather{
          }),
             axios.get('/forecast', {
                 params: {
-                    q: paramStr
+                    q: paramStr,
+                    cnt: cnt
                 }
             })]
     };
 }
 
 module.exports = new Weather();
+
+//第一步想到要传一个cnt给route，首先想要怎么拿？
+//从params拿，先去route改 -> /:con
+//去controlller， 传值给model
+//model里handle这个数值
