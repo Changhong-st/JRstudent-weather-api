@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {getCurrentData, getForecastData} = require('../controllers/weatherControllers');
+const getCityWeatherData = require('../controllers/weatherControllers');
 
 //router.get('/:cc/:city/:type, getCityWeatherData);
-router.get('/:cc/:city/current', getCurrentData);
-router.get('/:cc/:city/forecast', getForecastData);
-router.get('/:cc/:city/forecast/:cnt', getForecastData);
+//router.get('/:cc/:city/current', getCityWeatherData);
+router.get('/:cc/:city/:type/:cnt', getCityWeatherData); //小瑕疵
+router.get('/:cc/:city/:type', getCityWeatherData); 
 
 module.exports = router;

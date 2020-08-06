@@ -7,63 +7,39 @@ const axios = require('../services/axios');
 
 class Weather{
     constructor(){}
-    getCurrentData(city, cc, type){
-        return Promise.all(this.getOpenWeatherData(city, cc)).then((res) => {
-            let currentWeatherData = res[0].data;
-            let forecastWeatherData = res[1].data;
-            const weather = {
-                city: new City(forecastWeatherData.city),  //方法一： if else 传入type判断 ，remove相应的type
-                current: new CurrentWeather(currentWeatherData), //方法二： 只保留City，根据type注入
-                forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
-        };
-        delete weather.forecast
-        return weather;
-        })
-        //dotenv
-
-        // return this.getOpenWeatherData(city, cc).then(
-        //     (response) => {
-        //         let data = response.data;
-        //         return data;
-        //     }
-        // ) 
-    }
-
-    getForecastData(city, cc, cnt = 7){
-        return Promise.all(this.getOpenWeatherData(city, cc, cnt)).then((res) => {
+    getWeatherData(city, cc, type, cnt = 7){
+        return Promise.all(this.getOpenWeatherData(city, cc, type, cnt)).then((res) => {
             let currentWeatherData = res[0].data;
             let forecastWeatherData = res[1].data;
             const weather = {
                 city: new City(forecastWeatherData.city),
-                //current: new CurrentWeather(currentWeatherData),
-                forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
+                // current: new CurrentWeather(currentWeatherData),
+                // forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))
         };
-        //weather.remove(current);
+        if (type === 'current'){  //model不做判断?
+            Object.assign(weather, {current: new CurrentWeather(currentWeatherData)});
+            return weather;
+        }
+        if (type === 'forecast'){
+            Object.assign(weather, {forecast: forecastWeatherData.list.map(i => new ForecastWeather(i))});
+            return weather;
+        }
         return weather;
         })
         //dotenv
     }
 
-    // getCurrentData(city, cc){
-    //     const weather = this.getData(city, cc);
-    //     delete
-    //     weather.remove(forecast);
-    //     return weather;
-    // }
-    // getForecastData(city, cc){
-    //     const weather = this.getData(city, cc);
-    //     weather.remove(forecast);
-    //     return weather;
-    // }
-    getOpenWeatherData(city, cc, cnt){  
+    getOpenWeatherData(city, cc, type, cnt){  
         const paramStr = `${city}, ${cc}`;
         return [
-            axios.get('/weather', {
+            axios.get('/weather', { 
+        //'/data/2.5/weather?appid=38005f91a8e6a3ddb61bdc5df3090b2c&units=metric&q=brisbane, au'
             params: {
-                q: paramStr
+                q: paramStr,
             }
          }),
             axios.get('/forecast', {
+            //'/data/2.5/forecast?appid=38005f91a8e6a3ddb61bdc5df3090b2c&units=metric&q=brisbane, au'
                 params: {
                     q: paramStr,
                     cnt: cnt
@@ -73,8 +49,3 @@ class Weather{
 }
 
 module.exports = new Weather();
-
-//第一步想到要传一个cnt给route，首先想要怎么拿？
-//从params拿，先去route改 -> /:con
-//去controlller， 传值给model
-//model里handle这个数值
