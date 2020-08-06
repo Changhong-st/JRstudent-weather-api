@@ -9,7 +9,7 @@ class CurrentWeather{
         this.weatherDesc = weather.description;
         this.humidity = main.humidity;
         this.windSpeed = wind.speed;
-        this.windDirection = wind.deg;
+        this.windDirection = this.convertWindDirection(wind.deg);
     }
 
     convertedFahrenheit(celsius) {
@@ -18,6 +18,9 @@ class CurrentWeather{
     }
     convertWindDirection(deg) {
         //formula needed
+        const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+        const value = Math.floor((degree + 22.5) / 45);
+        return directions[value % 8];
     }
 }
 
