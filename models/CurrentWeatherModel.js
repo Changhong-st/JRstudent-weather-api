@@ -19,7 +19,7 @@ class CurrentWeather{
     convertWindDirection(deg) {
         //formula needed
         const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-        const value = Math.floor((degree + 22.5) / 45);
+        const value = Math.floor((deg + 22.5) / 45);
         return directions[value % 8];
     }
 }
