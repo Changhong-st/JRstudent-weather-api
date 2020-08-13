@@ -12,10 +12,10 @@ app.use(helmet());
 app.use(morgan('common'));
 app.use(express.json());
 app.use(cors());
-const port = process.env.port || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use('/v1', routes);
 
-app.listen(port, () => {
-    console.log(`app listening on ${port}`);
+app.listen(PORT, () => {
+    console.log(`app listening on ${PORT}`);
 });
