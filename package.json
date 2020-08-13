@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "debug": "nodemon --inspect index.js"
+    "dev": "nodemon src/index.js",
+    "debug": "nodemon --inspect src/index.js"
   },
   "keywords": [],
   "author": "",
