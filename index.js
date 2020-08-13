@@ -11,7 +11,7 @@ app.use(helmet());
 app.use(morgan('common'));
 app.use(express.json());
 app.use(cors());
-app.use(routes);
+app.use('/v1', routes);
 
 const port = process.env.port || 3000;
 
