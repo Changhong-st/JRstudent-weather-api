@@ -1,6 +1,7 @@
 const City = require('./CityModel');
 const CurrentWeather = require('./CurrentWeatherModel');
 const ForecastWeather = require('./ForecastWeatherModel');
+const LocationWeather = require('./LocationModel');
 const axios = require('../services/axios');
 //const { delete } = require('../routes/weatherRoute');
 
@@ -38,7 +39,7 @@ class Weather{
                     }
                 }).then((res) => {
                     let locationWeatherData = res.data;
-                    const weather = {position: new CurrentWeather(locationWeatherData)}
+                    const weather = {position: new LocationWeather(locationWeatherData)}
                     return weather;
                 })
     };

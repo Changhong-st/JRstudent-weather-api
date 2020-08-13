@@ -5,11 +5,12 @@ class CurrentWeather{
         this.maxCelsius = main.temp_max;
         this.minFahrenheit = this.convertedFahrenheit(main.temp_min);
         this.maxFahrenheit = this.convertedFahrenheit(main.temp_max);
-        this.weather = weather.main;
-        this.weatherDesc = weather.description;
+        this.weather = weather[0].main; 
+        this.weatherDesc = weather[0].description;
         this.humidity = main.humidity;
         this.windSpeed = wind.speed;
         this.windDirection = this.convertWindDirection(wind.deg);
+        this.icon = weather[0].icon;
     }
 
     convertedFahrenheit(celsius) {
