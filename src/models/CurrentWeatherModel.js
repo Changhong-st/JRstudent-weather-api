@@ -1,6 +1,7 @@
 class CurrentWeather{
     constructor(init_data) {
         const { main, weather, wind } = init_data;
+        this.temp = main.temp;
         this.minCelsius = main.temp_min;
         this.maxCelsius = main.temp_max;
         this.minFahrenheit = this.convertedFahrenheit(main.temp_min);
