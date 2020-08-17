@@ -36,7 +36,7 @@ class Weather{
     filterForecast(rawForecast){
         let filteredForecast = [];
             rawForecast.forEach((item, index) => {
-                if (index % 8 === 0) {
+                if ((index+1) % 8 === 0) {
                     filteredForecast.push(item);
                 }
             });
