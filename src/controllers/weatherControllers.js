@@ -3,9 +3,9 @@ const { response } = require('express');
 
 //route handler
 function getCityWeatherData (req, res){
-    const { city, cc, type, cnt } = req.params;
+    const { city, cc, type} = req.params;
     Weather
-        .getWeatherData(city, cc, type, cnt)
+        .getWeatherData(city, cc, type)
         .then( response=> {
             //data process
             return res.json(response);
